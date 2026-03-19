@@ -258,7 +258,7 @@ This estimate is used to:
 ### 1. Clone this repository and the target codebase
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/hmoskios/Context-Constrained-Agent.git
 cd context_agent
 git clone https://github.com/nlohmann/json.git
 ```
