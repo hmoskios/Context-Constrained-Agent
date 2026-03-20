@@ -14,7 +14,7 @@ This separation is useful because:
 
 from __future__ import annotations
 from typing import Sequence
-from drift_agent.context.budget import BudgetItem, total_tokens
+from context_agent.context.budget import BudgetItem, total_tokens
 
 
 def format_items_for_prompt(items: Sequence[BudgetItem]) -> str:

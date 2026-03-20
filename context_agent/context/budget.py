@@ -14,7 +14,7 @@ module provides simple utilities for:
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Sequence, Tuple
-from drift_agent.retrieval.retriever import Snippet
+from context_agent.retrieval.retriever import Snippet
 
 
 # Data structures
