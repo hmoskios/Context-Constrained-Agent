@@ -33,19 +33,6 @@ The system supports two primary workflows:
 
 ---
 
-## Target Codebase
-
-This project was developed against the following repository: [`nlohmann/json`](https://github.com/nlohmann/json)
-
-This repository was chosen because it is:
-
-- Real-world and non-trivial
-- Large enough that it cannot be fully loaded into context
-- Built with CMake
-- Supported by a strong test suite
-
----
-
 ## Design Approach
 
 The system is organized into several layers:
