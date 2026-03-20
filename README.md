@@ -1,47 +1,23 @@
 # Context-Constrained Codebase Agent
 
-This project is a context-constrained AI agent for understanding and debugging a real-world C++ codebase under a strict 5,000-token limit.
+This project implements a context-constrained AI agent for understanding and debugging a C++ codebase under a strict token limit.
 
-This project was built around the [`nlohmann/json`](https://github.com/nlohmann/json) repository, a widely used open-source C++ JSON library with a CMake-based build system and a comprehensive test suite. The agent is designed to answer questions about the codebase, execute build and test commands locally, interpret command output, and explain errors - all while carefully controlling how much information is loaded into the model context.
+This project was built around the [`nlohmann/json`](https://github.com/nlohmann/json) repository, a widely used open-source C++ JSON library with a CMake-based build system and a comprehensive test suite. The agent can answer questions about the codebase, execute build and test commands locally, interpret command outputs, and explain errors.
 
----
+The core challenge is operating under a **5,000-token limit** while working with a repository that is far too large to fit into context all at once. Instead of loading entire files or the full codebase, the agent selectively retrieves relevant snippets, executes local build/test commands, and constructs a bounded prompt for the model.
 
-## Project Summary
+The system supports two primary workflows:
 
-This agent is designed to work with a **pre-downloaded local copy** of a codebase rather than downloading or cloning repositories itself. The core challenge is not simply calling an LLM, but deciding:
+### Codebase Understanding
+- Locate relevant files and symbols
+- Retrieve targeted code snippets
+- Explain classes, functions, and architecture
 
-- What code or command output is worth loading into context
-- How to retrieve only the most relevant sections of a large repository
-- How to stay within a strict 5,000-token context budget
-- How to combine retrieval, execution, and explanation into a coherent workflow
-
-The system supports two main categories of tasks:
-
-1. **Codebase Understanding**
-   - Answer questions about files, classes, functions, and code structure
-   - Locate relevant files for a query
-   - Explain what a symbol or file does using retrieved snippets
-
-2. **Build & Execution**
-   - Run build and test commands locally
-   - Capture and interpret command output
-   - Parse compiler/test output for file and line references
-   - Retrieve the relevant source context for failures
-   - Explain what happened and why
-
----
-
-## Purpose
-
-The purpose of this project is to demonstrate a practical approach to building an AI agent that can work effectively on a codebase that is **too large to fit into the model context all at once**.
-
-Instead of loading the full repository, the agent:
-
-- Uses local tools to inspect and search the codebase
-- Retrieves only targeted snippets
-- Packs those snippets into a bounded prompt
-- Executes local build/test commands when needed
-- Uses a LangGraph workflow to coordinate the overall loop
+### Build & Debugging
+- Execute build and test commands (e.g., `cmake`, `ctest`)
+- Capture and parse command output
+- Retrieve source context for errors
+- Explain failures and test results
 
 ---
 
@@ -68,23 +44,19 @@ This repository was chosen because it is:
 - Built with CMake
 - Supported by a strong test suite
 
-The agent assumes the repository already exists locally on disk.
-
 ---
 
 ## Design Approach
 
 The system is organized into several layers:
 
-### 1. Local Tooling Layer
-The agent uses a small set of local tools to interact with the codebase:
+### 1. Tooling Layer
+The agent uses a set of tools to interact with the codebase:
 
-- `list_dir(...)` - inspect directory structure
-- `read_file(...)` - read a bounded line range from a file
-- `rg_search(...)` - search the codebase using ripgrep
-- `run_cmd(...)` - run allowed local commands such as `cmake` and `ctest`
-
-This layer gives the agent controlled access to the repository and local execution environment.
+- `list_dir(...)` - inspects the directory structure
+- `read_file(...)` - reads a bounded line range from a file
+- `rg_search(...)` - searches the codebase using ripgrep
+- `run_cmd(...)` - runs allowed local commands such as `cmake` and `ctest`
 
 ### 2. Retrieval Layer
 The retriever is responsible for deciding which small pieces of the codebase to load.
@@ -214,17 +186,9 @@ The repository is intentionally too large to fit into the model context all at o
 - Never load the whole repository
 - Never load full files unless they are already very small
 - Retrieve only bounded snippets around relevant matches
-- Use command output to drive retrieval when debugging builds
+- Use the command output to drive retrieval when debugging builds
 - Estimate token usage before final prompt assembly
 - Drop or trim lower-priority content when needed
-
-### Prompt contents may include
-
-- System prompt
-- User query
-- Retrieved code snippets
-- Command output
-- Short memory summary
 
 ### Prioritization
 
@@ -243,9 +207,7 @@ Lower-priority content includes:
 
 ### Token budgeting
 
-The current implementation uses a simple token estimation strategy: Estimated tokens ≈ characters / 4
-
-This estimate is used to:
+The current implementation uses a simple token estimation strategy: Estimated Tokens ≈ Characters / 4. This estimate is used to:
 
 - Budget prompt contents
 - Trim large text blocks
@@ -263,6 +225,8 @@ cd context_agent
 git clone https://github.com/nlohmann/json.git
 ```
 
+The agent expects the repository to already exist locally.
+
 ### 2. Instal system dependencies (Linux / WSL)
 
 This project requires several system-level tools:
@@ -278,8 +242,6 @@ These are required for:
 - `cmake` → building the C++ project
 - `build-essential` → compiler toolchain
 - `ripgrep` → fast code search
-
-The agent expects the repository to already exist locally.
 
 ### 3. Create and activate a virtual environment
 
@@ -335,4 +297,4 @@ Then you can ask questions interactively with the agent.
 
 ## Notes
 
-This project is developed and tested on Linux/WSL. It may require modification to run on Windows without WSL.
+This project is developed and tested on Linux / WSL. It may require modification to run on Windows without WSL.
