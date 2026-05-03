@@ -1,6 +1,15 @@
 
-from drift_agent.retrieval.retriever import retrieve_for_query, retrieve_for_build_output
-from drift_agent.tools.toolkit import run_cmd
+"""
+Test retrieval from both user questions and build output.
+
+This script calls `retrieve_for_query` with a natural-language question about
+`json_pointer` and prints the snippets selected for that query. It also calls
+`retrieve_for_build_output` with real CMake output and a fake compiler error to
+verify that file paths and line numbers are turned into focused snippets.
+"""
+
+from context_agent.retrieval.retriever import retrieve_for_query, retrieve_for_build_output
+from context_agent.tools.toolkit import run_cmd
 
 
 REPO = "/home/hmoskios/json"

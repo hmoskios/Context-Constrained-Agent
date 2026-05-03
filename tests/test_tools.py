@@ -1,5 +1,13 @@
 
-from drift_agent.tools.toolkit import list_dir, rg_search, read_file, run_cmd
+"""
+Exercise the low-level repository toolkit helpers.
+
+This script verifies that `list_dir`, `rg_search`, and `read_file` can inspect
+a sample repository and extract context around `json_pointer`. It also runs a
+CMake configure command through `run_cmd` to check command execution output.
+"""
+
+from context_agent.tools.toolkit import list_dir, rg_search, read_file, run_cmd
 
 REPO = "/home/hmoskios/json"
 
