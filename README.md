@@ -82,31 +82,36 @@ The agent workflow is implemented as a LangGraph state machine. The graph:
 
 ```text
 context_agent/
-├── agent.py             # Main entry point; invokes the compiled graph
-├── main.py              # Command-line interface (CLI)
-├── state.py             # Shared data structures (BuildPlan, AgentState)
-├── nodes.py             # LangGraph node functions
-├── edges.py             # LangGraph routing logic
-├── graph.py             # Graph construction and compilation
+├── __init__.py
+│
+├── agent/
+│   ├── __init__.py
+│   └── agent.py             # Main entry point; invokes the compiled graph
+│
+├── core/
+│   ├── __init__.py
+│   ├── main.py              # Command-line interface (CLI)
+│   ├── state.py             # Shared data structures (BuildPlan, AgentState)
+│   ├── nodes.py             # LangGraph node functions
+│   ├── edges.py             # LangGraph routing logic
+│   └── graph.py             # Graph construction and compilation
 │
 ├── tools/
 │   ├── __init__.py
-│   └── toolkit.py       # list_dir, read_file, rg_search, run_cmd
+│   └── toolkit.py           # list_dir, read_file, rg_search, run_cmd
 │
 ├── retrieval/
 │   ├── __init__.py
-│   └── retriever.py     # Query retrieval and build-output retrieval
+│   └── retriever.py         # Query retrieval and build-output retrieval
 │
 ├── context/
 │   ├── __init__.py
-│   ├── budget.py        # Token estimation and context budgeting
-│   └── packer.py        # Final prompt assembly
+│   ├── budget.py            # Token estimation and context budgeting
+│   └── packer.py            # Final prompt assembly
 │
-├── llm/
-│   ├── __init__.py
-│   └── gemini_client.py # Gemini API wrapper
-│
-└── __init__.py
+└── llm/
+    ├── __init__.py
+    └── gemini_client.py     # Gemini API wrapper
 ```
 
 ---
@@ -204,17 +209,22 @@ The current implementation uses a simple token estimation strategy: Estimated To
 
 ## Setup
 
-### 1. Clone this repository and the target codebase
+### 1. Clone the target codebase
 
 ```bash
-git clone https://github.com/hmoskios/Context-Constrained-Agent.git
-cd context_agent
 git clone https://github.com/nlohmann/json.git
 ```
 
 The agent expects the repository to already exist locally.
 
-### 2. Instal system dependencies (Linux / WSL)
+### 2. Clone this repository
+
+```bash
+git clone https://github.com/hmoskios/Context-Constrained-Agent.git
+cd Context-Constrained-Agent
+```
+
+### 3. Instal system dependencies (Linux / WSL)
 
 This project requires several system-level tools:
 
@@ -230,26 +240,26 @@ These are required for:
 - `build-essential` → compiler toolchain
 - `ripgrep` → fast code search
 
-### 3. Create and activate a virtual environment
+### 4. Create and activate a virtual environment
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 4. Install Python dependencies
+### 5. Install Python dependencies
 
 ```bash
 pip install langgraph google-genai tiktoken
 ```
 
-### 5. Set API key
+### 6. Set API key
 
 ```bash
 export GEMINI_API_KEY="your_api_key_here"
 ```
 
-### 6. Run the agent
+### 7. Run the agent
 
 From the project root, run:
 
