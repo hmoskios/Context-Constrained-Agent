@@ -21,7 +21,7 @@ from context_agent.context.budget import build_budgeted_items
 from context_agent.context.packer import build_final_prompt
 from context_agent.llm.gemini_client import ask_gemini
 from context_agent.agent import (looks_like_build_query, choose_build_plan, run_build_plan)
-from context_agent.state import AgentState
+from context_agent.core.state import AgentState
 
 
 # Nodes #1: Query classification

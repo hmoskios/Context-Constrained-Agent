@@ -21,7 +21,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, TypedDict, Literal
 from context_agent.tools.toolkit import run_cmd, CommandResult
-from context_agent.state import BuildPlan
+from context_agent.core.state import BuildPlan
 
 
 # Query classification
@@ -209,6 +209,6 @@ def handle_query(repo_root: str, user_query: str) -> str:
     Returns:
         Final model response string.
     """
-    from context_agent.graph import AGENT_GRAPH
+    from context_agent.core.graph import AGENT_GRAPH
     final_state = AGENT_GRAPH.invoke({"repo_root": repo_root, "user_query": user_query})
     return final_state["answer"]

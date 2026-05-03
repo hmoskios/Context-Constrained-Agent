@@ -33,9 +33,9 @@ Graph structure:
 
 from __future__ import annotations
 from langgraph.graph import StateGraph, START, END
-from context_agent.state import AgentState
-from context_agent.edges import route_after_classification
-from context_agent.nodes import (
+from context_agent.core.state import AgentState
+from context_agent.core.edges import route_after_classification
+from context_agent.core.nodes import (
     classify_query_node,
     retrieve_understanding_node,
     choose_build_plan_node,

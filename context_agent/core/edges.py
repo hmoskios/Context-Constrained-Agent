@@ -11,7 +11,7 @@ For this project, the main routing decision happens after query classification:
 """
 
 from __future__ import annotations
-from context_agent.state import AgentState
+from context_agent.core.state import AgentState
 
 
 def route_after_classification(state: AgentState) -> str:
